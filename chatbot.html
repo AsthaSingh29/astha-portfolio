@@ -1,0 +1,391 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0ebff;--s1:#ffffff;--s2:#f5f1ff;--s3:#e9e0ff;
+  --gold:#7c3aed;--gold2:#a78bfa;--text:#1e1b2e;--t2:#5b5080;--t3:#9688c0;
+  --r:14px;--sans:'DM Sans',sans-serif;--serif:'DM Serif Display',serif;
+}
+#cw{background:var(--bg);border-radius:20px;overflow:hidden;font-family:var(--sans);
+  display:flex;flex-direction:column;border:1.5px solid rgba(124,58,237,0.2);position:relative;}
+#ch{background:linear-gradient(135deg,#5b21b6 0%,#7c3aed 55%,#a78bfa 100%);
+  padding:18px 22px 16px;border-bottom:1px solid rgba(124,58,237,0.2);
+  display:flex;align-items:center;gap:13px;position:relative;overflow:hidden;}
+#ch::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;
+  background:radial-gradient(circle,rgba(255,255,255,0.18) 0%,transparent 70%);border-radius:50%;}
+.av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#c4b5fd,#7c3aed);
+  display:flex;align-items:center;justify-content:center;font-family:var(--serif);
+  font-size:17px;color:#fff;flex-shrink:0;position:relative;}
+.av::after{content:'';position:absolute;bottom:1px;right:1px;width:10px;height:10px;
+  background:#4ade80;border-radius:50%;border:2px solid #7c3aed;animation:pd 2s infinite;}
+@keyframes pd{0%,100%{opacity:1}50%{opacity:.4}}
+.hi h3{font-family:var(--serif);font-size:16px;color:var(--text);font-weight:400;}
+.hi p{font-size:11.5px;color:rgba(255,255,255,0.75);margin-top:2px;font-weight:300;letter-spacing:.04em;}
+#tabs{display:flex;border-bottom:1.5px solid rgba(124,58,237,0.15);background:var(--s1);}
+.tab{flex:1;padding:10px 6px;text-align:center;font-size:11px;letter-spacing:.05em;
+  color:var(--t3);cursor:pointer;border-bottom:2px solid transparent;
+  transition:all .22s;font-weight:500;text-transform:uppercase;}
+.tab.on{color:var(--gold);border-bottom-color:var(--gold);background:rgba(124,58,237,0.06);}
+.tab:hover:not(.on){color:var(--t2);}
+.panel{display:none;}
+.panel.on{display:flex;flex-direction:column;}
+#msgs{overflow-y:auto;padding:18px 16px;display:flex;flex-direction:column;
+  gap:13px;height:340px;scrollbar-width:thin;scrollbar-color:var(--s3) transparent;}
+#msgs::-webkit-scrollbar{width:3px}
+#msgs::-webkit-scrollbar-thumb{background:var(--s3);border-radius:3px}
+.m{display:flex;gap:9px;align-items:flex-end;animation:mi .28s ease}
+@keyframes mi{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.m.u{flex-direction:row-reverse}
+.mb{max-width:84%;padding:10px 14px;border-radius:16px;font-size:13px;
+  line-height:1.65;color:var(--text);}
+.m.b .mb{background:var(--s2);border:1.5px solid rgba(124,58,237,0.15);border-bottom-left-radius:3px;box-shadow:0 2px 12px rgba(124,58,237,0.07);}
+.m.u .mb{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;
+  font-weight:500;border-bottom-right-radius:3px;}
+.ma{width:26px;height:26px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;}
+.m.b .ma{background:linear-gradient(135deg,#c4b5fd,#7c3aed);color:#fff;}
+.m.u .ma{background:var(--s3);color:var(--gold);}
+#chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 12px;}
+.chip{background:var(--s2);border:1.5px solid rgba(124,58,237,0.2);color:var(--t2);
+  padding:6px 12px;border-radius:18px;font-size:11.5px;cursor:pointer;
+  transition:all .18s;font-family:var(--sans);}
+.chip:hover{border-color:var(--gold);color:var(--gold);background:rgba(124,58,237,0.1);}
+#ir{padding:12px 14px;border-top:1.5px solid rgba(124,58,237,0.12);background:var(--s1);
+  display:flex;gap:9px;align-items:center;}
+#inp{flex:1;background:var(--s2);border:1.5px solid rgba(124,58,237,0.2);color:var(--text);
+  padding:10px 14px;border-radius:22px;font-size:13px;font-family:var(--sans);outline:none;transition:border .18s;}
+#inp:focus{border-color:var(--gold);}
+#inp::placeholder{color:var(--t3);}
+#snd{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a78bfa);box-shadow:0 4px 16px rgba(124,58,237,0.3);
+  border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .14s;}
+#snd:hover{transform:scale(1.08);}
+#snd svg{width:15px;height:15px;fill:#fff;}
+.ty{display:flex;gap:5px;padding:4px 2px;align-items:center}
+.ty span{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:bo .85s infinite;opacity:.6;}
+.ty span:nth-child(2){animation-delay:.17s}.ty span:nth-child(3){animation-delay:.34s}
+@keyframes bo{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.sp{overflow-y:auto;max-height:520px;padding:18px;display:flex;flex-direction:column;gap:14px;}
+.sl{font-family:var(--serif);font-size:17px;color:var(--text);margin-bottom:6px;}
+.sl2{font-size:12px;color:var(--t2);margin-bottom:8px;margin-top:14px;}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:4px;}
+.tg{background:rgba(124,58,237,0.05);border:1.5px solid rgba(124,58,237,0.15);color:var(--t2);
+  padding:3px 9px;border-radius:10px;font-size:11.5px;}
+.tg.g{border-color:rgba(124,58,237,0.4);color:var(--gold);background:rgba(124,58,237,0.08);}
+.lbar{display:flex;align-items:center;gap:10px;margin-bottom:7px;}
+.lbar span:first-child{font-size:13px;color:var(--text);width:58px;}
+.lbar .tr{flex:1;height:3px;background:var(--s3);border-radius:2px;}
+.lbar .fi{height:100%;background:var(--gold);border-radius:2px;}
+.lbar span:last-child{font-size:11px;color:var(--t3);width:42px;}
+.tl{position:relative;padding-left:18px;border-left:1.5px solid rgba(124,58,237,0.2);display:flex;flex-direction:column;gap:18px;}
+.te{position:relative;}
+.te::before{content:'';position:absolute;left:-22px;top:4px;width:8px;height:8px;border-radius:50%;background:var(--gold);}
+.te .yr{font-size:10.5px;color:var(--t3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;}
+.te .ttl{font-size:13.5px;font-weight:500;color:var(--text);}
+.te .org{font-size:11.5px;color:var(--gold);margin-top:2px;}
+.te .desc{font-size:12px;color:var(--t2);margin-top:5px;line-height:1.55;}
+.ic{background:rgba(124,58,237,0.05);border:1.5px solid rgba(124,58,237,0.15);
+  border-radius:11px;padding:10px 13px;display:flex;align-items:center;gap:11px;}
+.ic .ico{width:34px;height:34px;border-radius:50%;background:rgba(124,58,237,0.1);
+  display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.ic .il{font-size:10px;color:var(--gold);letter-spacing:.07em;text-transform:uppercase;}
+.ic .iv{font-size:12.5px;color:var(--text);margin-top:3px;}
+.ic a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,169,110,.3);}
+.ic a:hover{border-bottom-color:var(--gold);}
+.div{border-top:1.5px solid rgba(124,58,237,0.12);padding-top:14px;margin-top:4px;}
+.ce{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--t2);}
+.cd{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+</style>
+
+<div id="cw">
+  <div id="ch">
+    <div class="av">A</div>
+    <div class="hi">
+      <h3>Astha's Portfolio Assistant</h3>
+      <p>Powered by pre-loaded portfolio data · Always available</p>
+    </div>
+  </div>
+
+  <div id="tabs">
+    <div class="tab on" onclick="sw('chat')">Chat</div>
+    <div class="tab" onclick="sw('skills')">Skills</div>
+    <div class="tab" onclick="sw('exp')">Experience</div>
+    <div class="tab" onclick="sw('contact')">Contact</div>
+  </div>
+
+  <div id="p-chat" class="panel on" style="flex:1;">
+    <div id="msgs">
+      <div class="m b">
+        <div class="ma">A</div>
+        <div class="mb">👋 Hi! I'm <strong>Astha's Portfolio Assistant</strong>.<br><br>I have all her info loaded — skills, projects, experience, certifications, education, and more. Ask me anything!</div>
+      </div>
+    </div>
+    <div id="chips">
+      <div class="chip" onclick="ask('Who is Astha Singh?')">Who is Astha?</div>
+      <div class="chip" onclick="ask('What are her technical skills?')">Skills</div>
+      <div class="chip" onclick="ask('What projects has she built?')">Projects</div>
+      <div class="chip" onclick="ask('What experience does she have?')">Experience</div>
+      <div class="chip" onclick="ask('What certifications does she have?')">Certifications</div>
+      <div class="chip" onclick="ask('What is her education?')">Education</div>
+      <div class="chip" onclick="ask('What are her hobbies?')">Hobbies</div>
+      <div class="chip" onclick="ask('How can I contact Astha?')">Contact</div>
+      <div class="chip" onclick="ask('Tell me about her robotics projects')">Robotics</div>
+      <div class="chip" onclick="ask('Tell me about her cybersecurity experience')">Cybersecurity</div>
+    </div>
+    <div id="ir">
+      <input id="inp" placeholder="Ask me anything about Astha..." onkeydown="if(event.key==='Enter')send()"/>
+      <button id="snd" onclick="send()">
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="p-skills" class="panel sp">
+    <div class="sl">Skills & Technologies</div>
+    <div class="sl2">Programming Languages</div>
+    <div class="tags"><span class="tg g">Python</span><span class="tg g">Java</span><span class="tg g">JavaScript</span><span class="tg g">HTML</span><span class="tg g">CSS</span></div>
+    <div class="sl2">AI & Data Science</div>
+    <div class="tags"><span class="tg">Generative AI</span><span class="tg">Data Analytics</span><span class="tg">Machine Learning</span><span class="tg">AI Fundamentals</span><span class="tg">RPA Basics</span><span class="tg">Data Visualization (Python)</span></div>
+    <div class="sl2">Cybersecurity</div>
+    <div class="tags"><span class="tg">Threat Detection & Prevention</span><span class="tg">Identity & Access Management</span><span class="tg">Risk Management</span><span class="tg">Cyber Incident Response</span><span class="tg">Digital Infrastructure Defense</span></div>
+    <div class="sl2">Web Development & Design</div>
+    <div class="tags"><span class="tg">Frontend Development</span><span class="tg">Responsive Design</span><span class="tg">CSS Animations</span><span class="tg">UI Design</span><span class="tg">Canva</span><span class="tg">Photoshop</span><span class="tg">Visual Presentation</span></div>
+    <div class="sl2">Robotics & Hardware</div>
+    <div class="tags"><span class="tg">Arduino</span><span class="tg">Microcontrollers</span><span class="tg">Ultrasonic Sensors</span><span class="tg">Bluetooth Integration</span><span class="tg">Automation</span></div>
+    <div class="sl2">Tools & Productivity</div>
+    <div class="tags"><span class="tg">MS Excel</span><span class="tg">MS PowerPoint (Advanced)</span><span class="tg">MS Word</span><span class="tg">Google Workspace</span><span class="tg">VS Code</span><span class="tg">Vercel</span></div>
+    <div class="div">
+      <div class="sl2" style="margin-top:0;">Soft Skills</div>
+      <div class="tags"><span class="tg">Adaptability</span><span class="tg">Creativity & Innovation</span><span class="tg">Time Management</span><span class="tg">Public Speaking</span><span class="tg">Discipline</span><span class="tg">Curiosity & Self-Motivation</span><span class="tg">Visual Communication</span></div>
+    </div>
+    <div class="div">
+      <div class="sl2" style="margin-top:0;">Languages</div>
+      <div class="lbar"><span>Hindi</span><div class="tr"><div class="fi" style="width:100%"></div></div><span>Native</span></div>
+      <div class="lbar"><span>English</span><div class="tr"><div class="fi" style="width:95%"></div></div><span>Fluent</span></div>
+      <div class="lbar"><span>Bengali</span><div class="tr"><div class="fi" style="width:90%"></div></div><span>Fluent</span></div>
+      <div class="lbar"><span>Spanish</span><div class="tr"><div class="fi" style="width:28%"></div></div><span>Beginner</span></div>
+    </div>
+  </div>
+
+  <div id="p-exp" class="panel sp">
+    <div class="sl">Experience & Achievements</div>
+    <div class="tl">
+      <div class="te"><div class="yr">2025 – Present</div><div class="ttl">TCS Cybersecurity Job Simulation</div><div class="org">TCS · Forage</div><div class="desc">Identity & Access Management (IAM), aligned security strategies with business goals, delivered technical documentation and presentations.</div></div>
+      <div class="te"><div class="yr">2024 – 2025</div><div class="ttl">Deloitte Cybersecurity Virtual Internship</div><div class="org">Deloitte · Remote</div><div class="desc">Simulated cyber threat analysis, risk management, protecting digital assets from threats.</div></div>
+      <div class="te"><div class="yr">2024 – 2025</div><div class="ttl">TATA Group Analyst Simulation</div><div class="org">TATA Group · Remote</div><div class="desc">Cyber incident response tasks and digital infrastructure defense. Worked on security strategy alignment.</div></div>
+      <div class="te"><div class="yr">2024</div><div class="ttl">SAWIT.AI Learnathon</div><div class="org">Generative AI Challenge</div><div class="desc">Solved real-world AI challenges using generative AI tools. Collaborated in teams to develop scalable AI solutions.</div></div>
+      <div class="te"><div class="yr">2023 – 2025</div><div class="ttl">Freelancer — Web Development & Design</div><div class="org">Self-Initiated</div><div class="desc">Built ShikshaSathi (ed-tech hackathon platform, live on Vercel), Karate Federation Website, Photography Portfolio, University Website, Sports Council Website, Birthday Surprise Website. Created logos and certificates using Canva & Photoshop.</div></div>
+      <div class="te"><div class="yr">2023 – 2024</div><div class="ttl">Reboot Robotics Academy</div><div class="org">In-School Program</div><div class="desc">Built Bluetooth-controlled car (Arduino + Android) and autonomous Obstacle Sensor Car (ultrasonic sensors). Learned microcontrollers, sensors, automation, and robotics logic.</div></div>
+      <div class="te"><div class="yr">2023</div><div class="ttl">Fortis Healthcare — Mental Health Dept.</div><div class="org">6-Day Internship</div><div class="desc">Observed psychological documentation, patient care protocols, and behavioural science practices in a clinical setting.</div></div>
+    </div>
+    <div class="div">
+      <div class="sl" style="font-size:15px;margin-bottom:12px;">Education</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div class="ic"><div class="ico">🎓</div><div><div class="il">2025 – 2029</div><div class="iv" style="font-weight:500;">BCA (Hons.) — Data Science & AI</div><div style="font-size:11.5px;color:var(--t2);margin-top:2px;">Techno India University, Kolkata</div></div></div>
+        <div class="ic"><div class="ico">📚</div><div><div class="il">2025 · ISC Class XII</div><div class="iv">98% — Purushottam Bhagchandka Academic School</div></div></div>
+        <div class="ic"><div class="ico">📖</div><div><div class="il">2023 · ICSE Class X</div><div class="iv">94% — Purushottam Bhagchandka Academic School</div></div></div>
+      </div>
+    </div>
+    <div class="div">
+      <div class="sl" style="font-size:15px;margin-bottom:12px;">Certifications</div>
+      <div style="display:flex;flex-direction:column;gap:7px;">
+        <div class="ce"><div class="cd"></div>HP LIFE — Data Science & Analytics</div>
+        <div class="ce"><div class="cd"></div>IBM — Data Visualization with Python</div>
+        <div class="ce"><div class="cd"></div>Deloitte Cybersecurity Virtual Experience Program</div>
+        <div class="ce"><div class="cd"></div>Cybersecurity Analyst Simulation — TATA Group (Forage)</div>
+        <div class="ce"><div class="cd"></div>Generative AI Course — GUVI (HCL Company)</div>
+        <div class="ce"><div class="cd"></div>Technical Training — Reboot Robotics Academy (2023–2024)</div>
+        <div class="ce"><div class="cd"></div>SAWIT.AI Learnathon Participant (2024)</div>
+        <div class="ce"><div class="cd"></div>6-Day Internship Certificate — Fortis Healthcare (2023)</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="p-contact" class="panel sp">
+    <div class="sl">Get in Touch</div>
+    <div style="display:flex;flex-direction:column;gap:9px;">
+      <div class="ic"><div class="ico">📧</div><div><div class="il">Email</div><div class="iv"><a href="mailto:astha2920singh0807@gmail.com">astha2920singh0807@gmail.com</a></div></div></div>
+      <div class="ic"><div class="ico">📱</div><div><div class="il">Phone</div><div class="iv">+91 9088161486</div></div></div>
+      <div class="ic"><div class="ico">🔗</div><div><div class="il">LinkedIn</div><div class="iv"><a href="https://linkedin.com/in/astha-singh-a54b6a2ba" target="_blank">linkedin.com/in/astha-singh-a54b6a2ba</a></div></div></div>
+      <div class="ic"><div class="ico">📍</div><div><div class="il">Location</div><div class="iv">Kolkata 700008, India<br><span style="font-size:11px;color:var(--t3);">Available for remote opportunities</span></div></div></div>
+      <div class="ic"><div class="ico">🌐</div><div><div class="il">Portfolio</div><div class="iv"><a href="https://shiksha-sathi-hackathon-gqfv5mmwp-shiksha-sathis-projects.vercel.app/#" target="_blank">ShikshaSathi Live Project ↗</a></div></div></div>
+    </div>
+    <div style="margin-top:8px;padding:13px;background:rgba(124,58,237,0.04);border:1.5px solid rgba(124,58,237,0.13);border-radius:11px;font-size:12px;color:var(--t2);line-height:1.65;">
+      Astha is a first-year BCA student specialising in Data Science & AI at Techno India University. Open to internships, collaborations, and exciting tech projects. She loves working at the intersection of code, creativity, and real-world problem-solving.
+    </div>
+  </div>
+</div>
+
+<script>
+const KB = {
+  about: {
+    keys: ['who','about','astha','yourself','introduce','tell me','summary','bio','background','person'],
+    ans: `<strong>Astha Singh</strong> is an AI & Data Science enthusiast based in <strong>Kolkata, India</strong>, currently pursuing <strong>BCA (Hons.) in Data Science & AI</strong> at Techno India University (2025–2029).<br><br>She's passionate about cybersecurity, robotics, generative AI, and creative web development. Her work blends technical depth with visual storytelling — from writing Python scripts to wiring Arduino robots to building beautiful web experiences.`
+  },
+  skills: {
+    keys: ['skill','know','language','tech','stack','tool','capable','proficient','expertise','programming'],
+    ans: `Here's a snapshot of Astha's skills:<br><br>
+💻 <strong>Programming:</strong> Python, Java, JavaScript, HTML, CSS<br>
+🧠 <strong>AI & Data:</strong> Generative AI, Data Analytics, Machine Learning, RPA Basics, Data Visualization (Python/IBM)<br>
+🔐 <strong>Cybersecurity:</strong> Threat Detection, IAM, Risk Management, Incident Response<br>
+🤖 <strong>Robotics:</strong> Arduino, Microcontrollers, Ultrasonic Sensors, Bluetooth Integration<br>
+🌐 <strong>Web & Design:</strong> Frontend Dev, CSS Animations, Canva, Photoshop<br>
+🛠️ <strong>Tools:</strong> MS Excel, MS PowerPoint (Advanced), Google Workspace, VS Code, Vercel<br><br>
+Use the <em>Skills tab</em> above for the full breakdown!`
+  },
+  projects: {
+    keys: ['project','built','shipped','website','web','portfolio','app','create','develop','work','shiksha','karate','birthday','mindspark','sport','university','photography'],
+    ans: `Astha has built several projects:<br><br>
+🚀 <strong>ShikshaSathi</strong> — Ed-tech hackathon platform for accessible education. Live on Vercel. (HTML, CSS, JS)<br>
+🥋 <strong>Karate Federation Website</strong> — Professional site for a local sports council<br>
+📸 <strong>Photography Portfolio</strong> — A clean visual portfolio website<br>
+🎓 <strong>Example University Website</strong> — Academic institution site<br>
+🎉 <strong>Birthday Surprise Website</strong> — Animated birthday gift site (HTML, CSS, JS animations)<br>
+🧠 <strong>MindSpark</strong> — Quiz-based learning platform (in progress)<br>
+🚗 <strong>Bluetooth Car</strong> — Arduino + Android Bluetooth-controlled robot<br>
+🤖 <strong>Obstacle Sensor Car</strong> — Autonomous car with ultrasonic sensors<br><br>
+She's also created <strong>2 logos</strong> and <strong>1 certificate</strong> for clients using Canva & Photoshop.`
+  },
+  experience: {
+    keys: ['experience','internship','work','job','simulation','deloitte','tata','tcs','fortis','sawit','learnathon','reboot','robotics','freelanc','career'],
+    ans: `Astha's experience includes:<br><br>
+🏢 <strong>TCS Cybersecurity Simulation (2025)</strong> — IAM, security strategy alignment, technical documentation<br>
+🏢 <strong>Deloitte Cybersecurity Virtual Internship (2024–25)</strong> — Threat analysis, risk management<br>
+🏢 <strong>TATA Group Analyst Simulation (2024–25)</strong> — Incident response, infrastructure defense<br>
+🌐 <strong>Freelancer (2023–25)</strong> — Web projects, logos, certificates<br>
+🤖 <strong>SAWIT.AI Learnathon (2024)</strong> — Real-world generative AI challenges<br>
+🔧 <strong>Reboot Robotics Academy (2023–24)</strong> — Built Arduino cars, learned automation<br>
+🏥 <strong>Fortis Healthcare Internship (2023)</strong> — Mental Health & Behavioural Sciences, 6 days`
+  },
+  certifications: {
+    keys: ['certif','certificate','course','credential','earn','qualif','hp','ibm','guvi','forage'],
+    ans: `Astha holds the following certifications:<br><br>
+📜 HP LIFE — Data Science & Analytics<br>
+📜 IBM — Data Visualization with Python<br>
+📜 Deloitte Cybersecurity Virtual Experience Program<br>
+📜 TATA Group Cybersecurity Analyst Simulation (Forage)<br>
+📜 Generative AI Course — GUVI (HCL Company)<br>
+📜 Technical Training — Reboot Robotics Academy (2023–24)<br>
+📜 SAWIT.AI Learnathon Participant (2024)<br>
+📜 6-Day Internship Certificate — Fortis Healthcare (2023)`
+  },
+  education: {
+    keys: ['educat','study','student','university','school','degree','bca','class','icse','isc','techno','purushottam','score','grade','percent','gpa'],
+    ans: `Astha's educational background:<br><br>
+🎓 <strong>BCA (Hons.) — Data Science & AI</strong><br>Techno India University, Kolkata (2025–2029, ongoing)<br><br>
+📚 <strong>Class XII ISC — 98%</strong><br>Purushottam Bhagchandka Academic School (2025)<br><br>
+📖 <strong>Class X ICSE — 94%</strong><br>Purushottam Bhagchandka Academic School (2023)`
+  },
+  hobbies: {
+    keys: ['hobb','interest','fun','leisure','sport','karate','chess','ncc','rotary','outside','personal','life','activit'],
+    ans: `Outside of tech, Astha is passionate about:<br><br>
+🥋 <strong>Karate</strong> — Discipline, resilience, and physical training<br>
+♟️ <strong>Chess</strong> — Strategic thinking and problem-solving<br>
+🪖 <strong>NCC (National Cadet Corps)</strong> — Teamwork, drills, and leadership training<br>
+🌍 <strong>Rotary Victoria Interact Club</strong> — Community service, leadership, and youth engagement`
+  },
+  contact: {
+    keys: ['contact','email','phone','reach','linkedin','message','connect','hire','collab','social','location','kolkata','india','remote','available'],
+    ans: `Here's how to reach Astha:<br><br>
+📧 <strong>Email:</strong> astha2920singh0807@gmail.com<br>
+📱 <strong>Phone:</strong> +91 9088161486<br>
+🔗 <strong>LinkedIn:</strong> linkedin.com/in/astha-singh-a54b6a2ba<br>
+📍 <strong>Location:</strong> Kolkata 700008, India<br><br>
+She's open to <strong>internships, collaborations, and remote opportunities</strong>. Don't hesitate to reach out!`
+  },
+  cybersecurity: {
+    keys: ['cyber','security','hack','threat','iam','identity','access','deloitte','tata','tcs','risk','incident','attack','defense','protect'],
+    ans: `Astha has strong cybersecurity exposure through multiple simulations:<br><br>
+🔐 <strong>TCS (2025):</strong> Identity & Access Management (IAM), aligning security strategy with business goals<br>
+🔐 <strong>Deloitte (2024–25):</strong> Cyber threat analysis, risk management, protecting digital assets<br>
+🔐 <strong>TATA Group (2024–25):</strong> Incident response, digital infrastructure defense<br><br>
+She's also certified through Deloitte's Cybersecurity Virtual Experience Program and TATA's Forage simulation.`
+  },
+  robotics: {
+    keys: ['robot','arduino','sensor','bluetooth','car','hardware','circuit','microcontrol','autonom','obstacle','ultrasonic','reboot'],
+    ans: `Astha built two robotics projects at Reboot Robotics Academy (2023–24):<br><br>
+🚗 <strong>Mobile-Controlled Car</strong> — Bluetooth-based car using Arduino + Android app integration<br>
+🤖 <strong>Obstacle Sensor Car</strong> — Autonomous robot using ultrasonic sensors for real-time obstacle detection<br><br>
+She learned robotics fundamentals, microcontrollers, sensors, and logic circuits during this program.`
+  },
+  ai: {
+    keys: ['ai','artificial intelligence','machine learning','generative','data science','ml','nlp','guvi','sawit','data analytic','visualization'],
+    ans: `Astha's AI & Data Science profile:<br><br>
+🧠 <strong>Generative AI</strong> — Certified via GUVI (HCL Company); used in SAWIT.AI Learnathon<br>
+📊 <strong>Data Analytics & Visualization</strong> — HP LIFE & IBM Data Visualization with Python<br>
+🤖 <strong>Machine Learning Concepts</strong> — Foundational knowledge in ML<br>
+⚙️ <strong>RPA Basics</strong> — Robotic Process Automation fundamentals<br><br>
+Currently studying Data Science & AI in her BCA degree at Techno India University.`
+  },
+  languages_spoken: {
+    keys: ['speak','spoken language','hindi','english','bengali','spanish','fluent','native','multilingual'],
+    ans: `Astha speaks <strong>4 languages</strong>:<br><br>
+🇮🇳 <strong>Hindi</strong> — Native / Fluent<br>
+🇬🇧 <strong>English</strong> — Fluent<br>
+🇧🇩 <strong>Bengali</strong> — Fluent<br>
+🇪🇸 <strong>Spanish</strong> — Beginner`
+  }
+};
+
+const FALLBACK = `I have information about Astha's <strong>skills, projects, experience, certifications, education, robotics, cybersecurity, AI work, hobbies, and contact details</strong>. Try asking me about any of those, or use the quick chips below!`;
+
+function sw(t) {
+  document.querySelectorAll('.tab').forEach((el,i) => {
+    el.classList.toggle('on', ['chat','skills','exp','contact'][i] === t);
+  });
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.getElementById('p-'+t).classList.add('on');
+}
+
+function addMsg(role, html) {
+  const d = document.createElement('div');
+  d.className = 'm ' + role;
+  const av = document.createElement('div'); av.className = 'ma';
+  av.textContent = role === 'b' ? 'A' : 'U';
+  const bub = document.createElement('div'); bub.className = 'mb';
+  bub.innerHTML = html;
+  if(role === 'b'){d.appendChild(av); d.appendChild(bub);}
+  else {d.appendChild(bub); d.appendChild(av);}
+  document.getElementById('msgs').appendChild(d);
+  document.getElementById('msgs').scrollTop = 9999;
+}
+
+function showTyping() {
+  const d = document.createElement('div');
+  d.className = 'm b'; d.id = 'ty';
+  d.innerHTML = '<div class="ma">A</div><div class="mb"><div class="ty"><span></span><span></span><span></span></div></div>';
+  document.getElementById('msgs').appendChild(d);
+  document.getElementById('msgs').scrollTop = 9999;
+}
+
+function removeTyping() { document.getElementById('ty')?.remove(); }
+
+function findAnswer(q) {
+  const lq = q.toLowerCase();
+  let best = null, bestScore = 0;
+  for(const [, val] of Object.entries(KB)) {
+    let score = 0;
+    for(const k of val.keys) { if(lq.includes(k)) score++; }
+    if(score > bestScore) { bestScore = score; best = val; }
+  }
+  return bestScore > 0 ? best.ans : null;
+}
+
+function ask(q) {
+  document.getElementById('inp').value = q;
+  send();
+}
+
+function send() {
+  const inp = document.getElementById('inp');
+  const q = inp.value.trim();
+  if(!q) return;
+  inp.value = '';
+  addMsg('u', q);
+  showTyping();
+  setTimeout(() => {
+    removeTyping();
+    const ans = findAnswer(q);
+    addMsg('b', ans || FALLBACK);
+  }, 600 + Math.random() * 400);
+}
+</script>
