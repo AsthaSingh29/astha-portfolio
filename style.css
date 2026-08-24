@@ -656,6 +656,7 @@
         .banner-photo    .banner-bg { background: linear-gradient(135deg, #f0f9ff 0%, #bae6fd 100%); }
         .banner-bday     .banner-bg { background: linear-gradient(135deg, #fdf4ff 0%, #f5d0fe 100%); }
         .banner-ecocortex {background: linear-gradient(135deg, #16a34a, #22c55e);}
+        .banner-evshield .banner-bg { background: linear-gradient(135deg, #022c22 0%, #059669 100%); }
  
         /* decorative circles in banner */
         .banner-circle {
@@ -704,6 +705,9 @@
         .tech-tag.vercel   { background: #f1f5f9; color: #1e293b; }
         .tech-tag.netlify  { background: #ecfdf5; color: #059669; }
         .tech-tag.github   { background: #f1f5f9; color: #334155; }
+        .tech-tag.react    { background: #ecfeff; color: #0891b2; }
+        .tech-tag.tailwind { background: #e0f2fe; color: #0369a1; }
+        .tech-tag.zustand  { background: #faf5ff; color: #6b21a8; }
  
         /* ─── CARD ACTIONS ────────────────────── */
         .card-actions {
