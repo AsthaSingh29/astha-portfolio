@@ -2077,6 +2077,9 @@
     getFirestore, collection, addDoc, deleteDoc, doc,
     onSnapshot, query, orderBy, serverTimestamp
   } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
+  import {
+    getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
 
   const firebaseConfig = {
   apiKey: "AIzaSyB8jPz807B3Y3K4CE6HDc4Wzo4mBRceuuU",
@@ -2089,10 +2092,10 @@
 
   const app = initializeApp(firebaseConfig);
   const db  = getFirestore(app);
+  const auth = getAuth(app);
   const reviewsCol = collection(db, "reviews");
 
-  // ── Change this to your own admin password ──
-  const ADMIN_PASSWORD = "astha2024";
+  const ADMIN_EMAIL = "admin@asthasingh.com";
 
   let currentRating = 0;
   let reviews = [];
@@ -2251,9 +2254,31 @@
   const pwInput  = document.getElementById('adminPwInput');
   const loginErr = document.getElementById('adminLoginErr');
 
+  // Auth state listener to handle UI updates reactively
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      adminUnlocked = true;
+      loginDiv.style.display = 'none';
+      dashDiv.classList.add('show');
+      renderAdminList();
+    } else {
+      adminUnlocked = false;
+      loginDiv.style.display = '';
+      dashDiv.classList.remove('show');
+    }
+  });
+
   document.getElementById('adminToggle').addEventListener('click', () => {
     overlay.classList.add('open');
-    if (!adminUnlocked) setTimeout(() => pwInput.focus(), 80);
+    if (!adminUnlocked) {
+      loginDiv.style.display = '';
+      dashDiv.classList.remove('show');
+      setTimeout(() => pwInput.focus(), 80);
+    } else {
+      loginDiv.style.display = 'none';
+      dashDiv.classList.add('show');
+      renderAdminList();
+    }
   });
   document.getElementById('adminClose').addEventListener('click', closeAdmin);
   overlay.addEventListener('click', e => { if (e.target === overlay) closeAdmin(); });
@@ -2262,27 +2287,41 @@
   document.getElementById('adminLoginBtn').addEventListener('click', tryLogin);
   pwInput.addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
 
-  function tryLogin() {
-    if (pwInput.value === ADMIN_PASSWORD) {
-      adminUnlocked = true;
-      loginDiv.style.display = 'none';
-      dashDiv.classList.add('show');
-      loginErr.classList.remove('show');
+  async function tryLogin() {
+    const password = pwInput.value;
+    if (!password) { shake('adminPwInput'); return; }
+
+    const loginBtn = document.getElementById('adminLoginBtn');
+    loginBtn.disabled = true;
+    const originalText = loginBtn.innerHTML;
+    loginBtn.innerHTML = 'Unlocking...';
+
+    try {
+      await signInWithEmailAndPassword(auth, ADMIN_EMAIL, password);
       pwInput.value = '';
-      renderAdminList();
-    } else {
+    } catch (err) {
+      console.error(err);
+      loginErr.textContent = '❌ Incorrect password';
       loginErr.classList.add('show');
       pwInput.style.borderColor = '#ef4444';
       pwInput.value = '';
-      setTimeout(() => { pwInput.style.borderColor = ''; loginErr.classList.remove('show'); }, 2000);
+      setTimeout(() => {
+        pwInput.style.borderColor = '';
+        loginErr.classList.remove('show');
+      }, 2000);
+    } finally {
+      loginBtn.disabled = false;
+      loginBtn.innerHTML = originalText;
     }
   }
 
-  document.getElementById('adminLogoutBtn').addEventListener('click', () => {
-    adminUnlocked = false;
-    dashDiv.classList.remove('show');
-    loginDiv.style.display = '';
-    closeAdmin();
+  document.getElementById('adminLogoutBtn').addEventListener('click', async () => {
+    try {
+      await signOut(auth);
+      closeAdmin();
+    } catch (err) {
+      console.error(err);
+    }
   });
 
   document.getElementById('adminSearchInput').addEventListener('input', renderAdminList);
